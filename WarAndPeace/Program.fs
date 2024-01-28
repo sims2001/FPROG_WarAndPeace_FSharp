@@ -1,4 +1,6 @@
-﻿open System
+﻿module WarAndPeace
+
+open System
 open System.Collections.Generic
 
 let readFileAsVector ( filePath : string ) : string list =
@@ -29,7 +31,7 @@ let countOccurrences (words : string list) : (string * int) list =
 
 let calculateTermDensity (text: string list) (terms: string list) : float =
     let occurrences = countOccurrences terms
-    let density = float (occurrences |> List.length ) / float ( text |> List.length )
+    let density = if (text |> List.length) > 0 then float (occurrences |> List.length ) / float ( text |> List.length ) else 0.0
     density
 
 let splitChapters ( content : string list ) : string list list =
@@ -94,14 +96,17 @@ let printAndSaveResults (results: string list) (filePath: string) : unit =
     printfn "Chapter Categories:\n%s" resultContent
     saveToFile filePath resultContent
     
-let warAndPeace = "/home/simon/Desktop/FH/SEMESTER 5/FPROG/Semesterprojekt_F#/WarAndPeace/war_and_peace.txt"
-let warAndPeaceContent = readFileAsVector warAndPeace
-let tokenizedChapters = splitChapters warAndPeaceContent |> List.map removeChapterHeader |> removeEmptyChapters |> List.tail |> List.map (fun chapter -> tokenizeText chapter)
+    
 
-let warTermsPath = "/home/simon/Desktop/FH/SEMESTER 5/FPROG/Semesterprojekt_F#/WarAndPeace/war_terms.txt"
+//let warAndPeace  = "/home/simon/Desktop/FH/SEMESTER 5/FPROG/Semesterprojekt_F#/WarAndPeace/war_and_peace.txt"
+let warAndPeace  = "war_and_peace.txt"
+//let warTermsPath = "/home/simon/Desktop/FH/SEMESTER 5/FPROG/Semesterprojekt_F#/WarAndPeace/war_terms.txt"
+let warTermsPath = "war_terms.txt"
+//let peaceTermsPath = "/home/simon/Desktop/FH/SEMESTER 5/FPROG/Semesterprojekt_F#/WarAndPeace/peace_terms.txt"
+let peaceTermsPath = "peace_terms.txt"
+
+let tokenizedChapters = readFileAsVector warAndPeace |> splitChapters |> List.map removeChapterHeader |> removeEmptyChapters |> List.tail |> List.map (fun chapter -> tokenizeText chapter)
 let warTerms = readFileAsVector warTermsPath |> tokenizeText
-
-let peaceTermsPath = "/home/simon/Desktop/FH/SEMESTER 5/FPROG/Semesterprojekt_F#/WarAndPeace/peace_terms.txt"
 let peaceTerms = readFileAsVector peaceTermsPath |> tokenizeText
 
 
@@ -110,7 +115,7 @@ let warDensities, peaceDensities = processChapters tokenizedChapters warTerms pe
 let categorizedChapters = categorizeChapters warDensities peaceDensities
 
 
-let outputPath = "/home/simon/Desktop/FH/SEMESTER 5/FPROG/Semesterprojekt_F#/WarAndPeace/result.txt"
 
+//let outputPath = "/home/simon/Desktop/FH/SEMESTER 5/FPROG/Semesterprojekt_F#/WarAndPeace/result.txt"
+let outputPath = "result.txt"
 printAndSaveResults categorizedChapters outputPath
-
