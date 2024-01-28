@@ -61,9 +61,7 @@ let processChapters (chapters: string list list) (warTerms: string list) (peaceT
     let densitiesWar = new List<float>()
     let densitiesPeace = new List<float>()
 
-    let mutable i : int = 0
     for chapter in chapters do
-        i <- i + 1
         let filteredWordsWar = filterWords chapter warTerms
         let filteredWordsPeace = filterWords chapter peaceTerms
         
